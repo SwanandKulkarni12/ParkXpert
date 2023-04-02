@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QR Code Payment Demo</title>
+  <style>
+    /* CSS styles for the QR code */
+    .qr-code {
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>QR Code Payment Demo</h1>
+
+  <h2>Create a new transaction</h2>
+  <form id="create-transaction-form">
+    <label for="amount">Amount:</label>
+    <input type="number" name="amount" id="amount" required>
+    <button type="submit">Create Transaction</button>
+  </form>
+
+  <h2>Verify Transaction</h2>
+  <form id="verify-transaction-form">
+    <label for="transaction-id">Transaction ID:</label>
+    <input type="text" name="transaction-id" id="transaction-id" required>
+    <label for="amount">Amount:</label>
+    <input type="number" name="amount" id="amount" required>
+    <button type="submit">Verify Transaction</button>
+  </form>
+
+  <div id="qr-code-container">
+    <img id="myImg" alt="My Image">
+  </div>
+
+  <script>
+    // JavaScript code for creating and verifying transactions
+    const createTransactionForm = document.querySelector('#create-transaction-form')
+    const verifyTransactionForm = document.querySelector('#verify-transaction-form')
+    const qrCodeContainer = document.querySelector('#qr-code-container')
+    var img = document.getElementById("myImg");
+    createTransactionForm.addEventListener('submit', async (event) => {
+      event.preventDefault()
+      alert('Hello')
+      const formData = new FormData(createTransactionForm)
+      const amount = formData.get('amount')
+      const response = await fetch('/create_transaction', { method: 'POST', body: JSON.stringify({ amount }), headers: { 'Content-Type': 'application/json' } })
+      const data = await response.json()
+      console.log(data.qrCode)
+      // const qrCodeImage = document.createElement('img')
+      img.setAttribute("src", 'data:image/png;base64,' + data.qrCode);
+      // qrCodeImage.setAttribute('src', 'data:image/png;base64,' + data.qrCode)
+      // qrCodeImage.setAttribute('alt', 'Transaction QR Code')
+      // qrCodeImage.setAttribute('class', 'qr-code')
+      // qrCodeContainer.innerHTML = ''
+      // qrCodeContainer.appendChild(qrCodeImage)
+    })
+
+    verifyTransactionForm.addEventListener('submit', async (event) => {
+      event.preventDefault()
+      const formData = new FormData(verifyTransactionForm)
+      const transactionId = formData.get('transaction-id')
+      const amount = formData.get('amount')
+      const response = await fetch('/verify_transaction', { method: 'POST', body: JSON.stringify({ transactionId, amount }), headers: { 'Content-Type': 'application/json' } })
+      const data = await response.json()
+      alert(data.message)
+    })
+  </script>
+</body>
+</html>
