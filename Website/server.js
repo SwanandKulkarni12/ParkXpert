@@ -14,8 +14,8 @@ const QRCode = require('qrcode')
 const twilio = require('twilio');
 
 
-const accountSid = 'ACc65ef3a0ed84d614bc4d414f4ef90a3a';
-const authToken = '226594c79d533948aa1f6c3480053288';
+const accountSid = "Your SID";
+const authToken = "Your Token";
 
 app.use(session({
   secret: '2fbe9e214d66b79e27931002fcec9d879f77c14ea82e3c8ac929e523384ad2ff17d57bed5cafa4f8d26c4d6ca6d0fb1eb3d0a9d8311578eba47cec01b4b72deb',
