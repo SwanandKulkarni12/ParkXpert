@@ -114,7 +114,7 @@ if(isAvailable):
             firstname += j
     print(firstname)
     print(surname)
-    url2 = f"https://gender-api.com/get?name={firstname}&key=KYv8UVf2lrmPTzmARuQ8Au56Let6QpPKJ23W"
+    url2 = f"https://gender-api.com/get?name={firstname}&key=YOUR_KEY"
     response = requests.request("GET", url2)
     res = json.loads(response.text)
     gender = res["gender"]
@@ -166,7 +166,7 @@ else:
         payload = {"VehicleNumber": number.upper()}
         headers = {
             "content-type": "application/json",
-            "X-RapidAPI-Key": "98c5f48438mshbf4d22eab3ba360p10bfe5jsnb7b5948c8f57",
+            "X-RapidAPI-Key": "YOUR_KEY",
             "X-RapidAPI-Host": "vehicle-rc-information.p.rapidapi.com"
         }
         response = requests.request("POST", url, json=payload, headers=headers)
@@ -205,7 +205,7 @@ else:
                 surname += j
             if (i == 0):
                 firstname += j
-        url2 = f"https://gender-api.com/get?name={firstname}&key=KYv8UVf2lrmPTzmARuQ8Au56Let6QpPKJ23W"
+        url2 = f"https://gender-api.com/get?name={firstname}&key=YOUR_KEY"
         response = requests.request("GET", url2)
         res = json.loads(response.text)
         gender = res["gender"]
