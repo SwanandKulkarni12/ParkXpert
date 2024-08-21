@@ -18,14 +18,11 @@ const accountSid = "Your SID";
 const authToken = "Your Token";
 
 app.use(session({
-  secret: '2fbe9e214d66b79e27931002fcec9d879f77c14ea82e3c8ac929e523384ad2ff17d57bed5cafa4f8d26c4d6ca6d0fb1eb3d0a9d8311578eba47cec01b4b72deb',
+  secret: 'YOUR_SECRET',
   resave: false,
   saveUninitialized: true
 }));
-const razorpay = new Razorpay({
-  key_id: 'rzp_test_SrDUZ6lNE3EYKI',
-  key_secret: 'Dx3WEoYGOYQAGAFllFzhni5r',
-})
+
 const requireLogin = (req, res, next) => {
   if (!req.session.userId) {
     return res.redirect('/login');
@@ -199,47 +196,7 @@ app.post('/booking/*', (req, res) => {
   req.session.msg='Thanks For Booking !'
   res.redirect("/success")
 });
-app.post('/create_transaction', async (req, res) => {
-  
-    // Create a test transaction with Razorpay
-    const {amount,name,email,contact}=req.body;
-    let cust_id;
-    razorpay.customers.create({
-      name: name,
-      contact: 9975836089,
-      email: "swanandkulkarni272@gmail.com",
-      fail_existing: 0,
-      notes: {
-        notes_key_1: "Tea, Earl Grey, Hot",
-        notes_key_2: "Tea, Earl Grey… decaf."
-      }
-    }).then(res=>{
-      console.log(res)
-      razorpay.qrCode.create({
-  type: "upi_qr",
-  name: "Store Front Display",
-  usage: "single_use",
-  fixed_amount: true,
-  payment_amount: amount*100,
-  description: "For Store 1",
-  customer_id: res.id,
-  close_by: 1681615838,
-  notes: {
-    purpose: "Test UPI QR Code notes"
-  }
-}, function (error, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log(response);
-  }
-})
-    })
-    
 
-      
-    });
-    
     
     // const razorpayResponse = await razorpay.orders.create({ amount, currency: 'INR', payment_capture: 1 })
     // console.log(razorpayResponse)
@@ -253,24 +210,7 @@ app.post('/create_transaction', async (req, res) => {
  
 
 
-app.post('/verify_transaction', async (req, res) => {
-  try {
-    // Retrieve the transaction details from Razorpay
-    const transactionId = req.body.transactionId
-    const razorpayResponse = await razorpay.orders.fetch(transactionId)
 
-    // Verify the transaction details
-    if (razorpayResponse.amount === req.body.amount && razorpayResponse.status === 'captured') {
-      // Transaction is successful
-      return res.json({ message: 'Transaction successful' })
-    } else {
-      // Transaction failed
-      return res.status(400).json({ message: 'Transaction failed' })
-    }
-  } catch (error) {
-    return res.status(500).json({ error: error.message })
-  }
-})
 // start server
 
  
